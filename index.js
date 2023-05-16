@@ -28,6 +28,27 @@ var job = new CronJob('* * * * *', function(){
 } , null, true, 'Europe/Berlin');
 job.start();
 
+var jobAlive = new CronJob('30 21 * * *', function(){
+
+    var configTelegram = {
+        method: 'post',
+        url: 'https://api.telegram.org/bot'+process.env.TELEGRAM_TOKEN+'/sendMessage?chat_id=5641643064&text=Alive',
+        headers: {
+        'Content-Type': 'text/plain'
+        }
+    };
+    axios(configTelegram)
+          .then(function (response) {
+              console.log("Message sent");
+          })
+          .catch(function (error) {
+              console.log(error);
+          });
+}
+
+} , null, true, 'Europe/Berlin');
+job.start();
+
 const readDb = () =>{
     database.get(database.child(dbRef, `/`)).then((snapshot) => {
         releasesDb = snapshot.val();
