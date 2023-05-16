@@ -17,27 +17,6 @@ const firebaseConfig = {
   appId: process.env.APP_ID
 };
 
-    var configOpus = {
-        method: 'get',
-        url: 'https://api.discogs.com/marketplace/stats/8357188',
-        headers: {
-        'Content-Type': 'text/plain'
-        }
-    };
-    var configStay = {
-        method: 'get',
-        url: 'https://api.discogs.com/marketplace/stats/8357188',
-        headers: {
-        'Content-Type': 'text/plain'
-        }
-        };
-    var configIamLegion = {
-        method: 'get',
-        url: 'https://api.discogs.com/marketplace/stats/8357188',
-        headers: {
-        'Content-Type': 'text/plain'
-        }
-        };
     var configTelegram = {
         method: 'post',
         url: 'https://api.telegram.org/bot'+process.env.TELEGRAM_TOKEN+'/sendMessage?chat_id=5641643064&text=test',
@@ -46,31 +25,53 @@ const firebaseConfig = {
         }
     };
 
-            const appFb = firebase.initializeApp(firebaseConfig);
-            const databass = database.getDatabase(appFb);
+const appFb = firebase.initializeApp(firebaseConfig);
+const databass = database.getDatabase(appFb);
+const dbRef = database.ref(databass);
 
-            const dbRef = database.ref(databass);
-            const readDb = () =>{
-                database.get(database.child(dbRef, `/`)).then((snapshot) => {
-                    console.log(snapshot.val())
-                }).catch((error) => {
-                  console.error(error);
-                });
-            }
+const readDb = () =>{
+    database.get(database.child(dbRef, `/`)).then((snapshot) => {
+        releasesDb = snapshot.val();
+        console.log(releasesDb);
+    }).catch((error) => {
+      console.error(error);
+    });
+}
+readDb();
+let releasesDb = null
 
 app.get('/', (req, res) => {})
 
 const getReleaseStats = () =>{
-    axios(configOpus)
+    //readDb();
+
+    if(true){
+        console.log("jäää")
+        var config = {
+            method: 'get',
+            url: 'https://api.discogs.com/marketplace/stats/'+2,
+            headers: {
+            'Content-Type': 'text/plain'
+            }
+        };
+    
+    axios(config)
           .then(function (response) {
-              console.log(JSON.stringify(response.data));
+              let numDiscogs = response.data.num_for_sale
+              console.log(numDiscogs);
+              if(numDiscogs!=ele.forSale){
+                console.log("trigger telegram!")
+              }
           })
           .catch(function (error) {
               console.log(error);
           });
+        }
 }
 
-var job = new CronJob('* * * * *', function(){
+//getReleaseStats();
+
+/*var job = new CronJob('* * * * *', function(){
   axios(configOpus)
       .then(function (response) {
           console.log(JSON.stringify(response.data));
@@ -90,7 +91,7 @@ var job = new CronJob('* * * * *', function(){
       });
     readDb();
 } , null, true, 'Europe/Berlin');
-job.start();
+job.start();*/
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
