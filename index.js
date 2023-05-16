@@ -17,39 +17,33 @@ const firebaseConfig = {
   appId: process.env.APP_ID
 };
 
-    var configTelegram = {
-        method: 'post',
-        url: 'https://api.telegram.org/bot'+process.env.TELEGRAM_TOKEN+'/sendMessage?chat_id=5641643064&text=test',
-        headers: {
-        'Content-Type': 'text/plain'
-        }
-    };
-
 const appFb = firebase.initializeApp(firebaseConfig);
 const databass = database.getDatabase(appFb);
 const dbRef = database.ref(databass);
 
+var job = new CronJob('* * * * *', function(){
+
+    readDb();
+
+} , null, true, 'Europe/Berlin');
+job.start();
+
 const readDb = () =>{
     database.get(database.child(dbRef, `/`)).then((snapshot) => {
         releasesDb = snapshot.val();
+        snapshot.val().map((snapshot) =>{
+            getReleaseStats(snapshot);
+        })
         console.log(releasesDb);
     }).catch((error) => {
       console.error(error);
     });
 }
-readDb();
-let releasesDb = null
 
-app.get('/', (req, res) => {})
-
-const getReleaseStats = () =>{
-    //readDb();
-
-    if(true){
-        console.log("jäää")
+const getReleaseStats = (snapshot) =>{
         var config = {
             method: 'get',
-            url: 'https://api.discogs.com/marketplace/stats/'+2,
+            url: 'https://api.discogs.com/marketplace/stats/'+snapshot.id,
             headers: {
             'Content-Type': 'text/plain'
             }
@@ -57,42 +51,33 @@ const getReleaseStats = () =>{
     
     axios(config)
           .then(function (response) {
-              let numDiscogs = response.data.num_for_sale
-              console.log(numDiscogs);
-              if(numDiscogs!=ele.forSale){
-                console.log("trigger telegram!")
+              let numDiscogs = snapshot.forSale
+              if(numDiscogs!=response.data.num_for_sale){
+                sendTelegramMessage(snapshot);
               }
           })
           .catch(function (error) {
               console.log(error);
           });
-        }
 }
 
-//getReleaseStats();
+const sendTelegramMessage = (snapshot)=>{
+    var configTelegram = {
+        method: 'post',
+        url: 'https://api.telegram.org/bot'+process.env.TELEGRAM_TOKEN+'/sendMessage?chat_id=5641643064&text=Neues listing für '+ snapshot.title,
+        headers: {
+        'Content-Type': 'text/plain'
+        }
+    };
+    axios(configTelegram)
+          .then(function (response) {
+              console.log("Message sent");
+          })
+          .catch(function (error) {
+              console.log(error);
+          });
+}
 
-/*var job = new CronJob('* * * * *', function(){
-  axios(configOpus)
-      .then(function (response) {
-          console.log(JSON.stringify(response.data));
-      })
-      .catch(function (error) {
-          console.log(error);
-      });
+app.get('/', (req, res) => {res.send("Alive")})
 
-
-
-  axios(configTelegram)
-      .then(function (response) {
-          console.log(JSON.stringify(response.data));
-      })
-      .catch(function (error) {
-          console.log(error);
-      });
-    readDb();
-} , null, true, 'Europe/Berlin');
-job.start();*/
-
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
-})
+app.listen(process.env.PORT || 3000)
