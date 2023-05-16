@@ -28,7 +28,7 @@ var job = new CronJob('* * * * *', function(){
 } , null, true, 'Europe/Berlin');
 job.start();
 
-var jobAlive = new CronJob('30 21 * * *', function(){
+var jobAlive = new CronJob('35 21 * * *', function(){
 
     var configTelegram = {
         method: 'post',
