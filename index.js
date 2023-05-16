@@ -44,8 +44,6 @@ var jobAlive = new CronJob('30 21 * * *', function(){
           .catch(function (error) {
               console.log(error);
           });
-}
-
 } , null, true, 'Europe/Berlin');
 job.start();
 
