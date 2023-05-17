@@ -102,9 +102,9 @@ app.get('/', (req, res) => {res.send("Alive")})
 app.post('/add', (req, res) => {
     try{
         const postData = {
-            id: req.query.id,
+            id: parseInt(req.query.id),
             title: req.query.title,
-            forSale: req.query.forSale
+            forSale: parseInt(req.query.forSale)
           };
         const newPostKey = database.push(database.child(database.ref(databass), '/')).key;
 
