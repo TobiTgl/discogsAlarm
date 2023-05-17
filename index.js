@@ -99,4 +99,24 @@ const sendTelegramMessage = (snapshot)=>{
 
 app.get('/', (req, res) => {res.send("Alive")})
 
+app.post('/add', (req, res) => {
+    try{
+        const postData = {
+            id: req.query.id,
+            title: req.query.title,
+            forSale: req.query.forSale
+          };
+        const newPostKey = database.push(database.child(database.ref(databass), '/')).key;
+
+        const updates = {};
+        updates['/' + newPostKey] = postData;
+        database.update(database.ref(databass), updates);
+        res.sendStatus(200)
+    }catch(error){
+        console.log(error);
+        res.sendStatus(500);
+    }
+    
+})
+
 app.listen(process.env.PORT || 3000)
