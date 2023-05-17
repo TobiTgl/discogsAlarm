@@ -52,7 +52,7 @@ const readDb = () =>{
         releasesDb = snapshot.val();
         console.log(releasesDb);
         for(let key in releasesDb){
-            setTimeout(getReleaseStats(releasesDb[key]), 10);
+            setTimeout(getReleaseStats(), 100, releasesDb[key]);
         }
     }).catch((error) => {
       console.error(error);
