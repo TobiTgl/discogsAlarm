@@ -52,17 +52,17 @@ const readDb = () =>{
         releasesDb = snapshot.val();
         console.log(releasesDb);
         for(let key in releasesDb){
-            setTimeout(getReleaseStats(), 100, releasesDb[key]);
+            setTimeout(getReleaseStats, 100, releasesDb, key);
         }
     }).catch((error) => {
       console.error(error);
     });
 }
 
-const getReleaseStats = (snapshot) =>{
+const getReleaseStats = (snapshot, key) =>{
         var config = {
             method: 'get',
-            url: 'https://api.discogs.com/marketplace/stats/'+snapshot.id,
+            url: 'https://api.discogs.com/marketplace/stats/'+snapshot[key].id,
             headers: {
             'Content-Type': 'text/plain'
             }
