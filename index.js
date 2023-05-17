@@ -50,10 +50,11 @@ job.start();
 const readDb = () =>{
     database.get(database.child(dbRef, `/`)).then((snapshot) => {
         releasesDb = snapshot.val();
-        snapshot.val().map((snapshot) =>{
-            getReleaseStats(snapshot);
-        })
         console.log(releasesDb);
+        for(let key in releasesDb){
+            console.log(key)
+            getReleaseStats(releasesDb[key]);
+        }
     }).catch((error) => {
       console.error(error);
     });
