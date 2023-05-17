@@ -65,7 +65,7 @@ const getReleaseStats = (snapshot) =>{
             url: 'https://api.discogs.com/marketplace/stats/'+snapshot.id,
             headers: {
             'Content-Type': 'text/plain',
-            'Authorization': 'Discogs token='+process.env.DISCOG_TOKEN
+            'Authorization': 'Discogs key='+process.env.DISCOG_KEY+', secret='+process.env.DISCOGS_SECRET
             }
         };
     
