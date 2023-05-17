@@ -52,14 +52,14 @@ const readDb = () =>{
         releasesDb = snapshot.val();
         console.log(releasesDb);
         for(let key in releasesDb){
-            setTimeout(getReleaseStats, 1000, releasesDb[key]);
+            setTimeout(getReleaseStats, 1000, releasesDb[key], key);
         }
     }).catch((error) => {
       console.error(error);
     });
 }
 
-const getReleaseStats = (snapshot) =>{
+const getReleaseStats = (snapshot, key) =>{
         var config = {
             method: 'get',
             url: 'https://api.discogs.com/marketplace/stats/'+snapshot.id,
@@ -74,6 +74,7 @@ const getReleaseStats = (snapshot) =>{
               let numDiscogs = snapshot.forSale
               if(numDiscogs!=response.data.num_for_sale){
                 sendTelegramMessage(snapshot);
+                updateSaleCounter(snapshot, response, key);
               }
           })
           .catch(function (error) {
@@ -96,6 +97,18 @@ const sendTelegramMessage = (snapshot)=>{
           .catch(function (error) {
               console.log(error);
           });
+}
+
+const updateSaleCounter = (snapshot, response, key)=>{
+    const postData = {
+        id: snapshot.id,
+        title: snapshot.title,
+        forSale: response.data.num_for_sale,
+      };
+
+    const updates = {};
+    updates['/' + key] = postData;
+    database.update(database.ref(databass), updates);
 }
 
 app.get('/', (req, res) => {res.send("Alive")})
