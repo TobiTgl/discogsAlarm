@@ -73,7 +73,9 @@ const getReleaseStats = (snapshot, key) =>{
           .then(function (response) {
               let numDiscogs = snapshot.forSale
               if(numDiscogs!=response.data.num_for_sale){
-                sendTelegramMessage(snapshot);
+                  if(numDiscogs<response.data.num_for_sale){
+                    sendTelegramMessage(snapshot);
+                  }
                 updateSaleCounter(snapshot, response, key);
               }
           })
