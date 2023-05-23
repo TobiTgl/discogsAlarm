@@ -32,7 +32,7 @@ var jobAlive = new CronJob('00 12 * * *', function(){
 
     var configTelegram = {
         method: 'post',
-        url: 'https://api.telegram.org/bot'+process.env.TELEGRAM_TOKEN+'/sendMessage?chat_id=5641643064&text=Alive',
+        url: 'https://api.telegram.org/bot'+process.env.TELEGRAM_TOKEN+'/sendMessage?chat_id=5641643064&text=Läuft',
         headers: {
         'Content-Type': 'text/plain'
         }
