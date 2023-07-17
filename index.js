@@ -120,7 +120,7 @@ const checkDoclibDatesBlaustein = ()=> {
     let slicedeDate = date.slice(0, 10);
     var configDoclib = {
         method: 'get',
-        url: 'https://www.doctolib.de/availabilities.json?visit_motive_ids=4322286&agenda_ids=476079-476080&practice_ids=187855&insurance_sector=public&telehealth=false&limit=5&start_date=' + slicedeDate,
+        url: 'https://www.doctolib.de/availabilities.json?visit_motive_ids=4322286&agenda_ids=476079-476080&practice_ids=187855&insurance_sector=private&telehealth=false&limit=5&start_date=2023-07-16' + slicedeDate,
         headers: {
             'Content-Type': 'text/plain'
         }
