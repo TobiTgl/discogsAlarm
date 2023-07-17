@@ -24,6 +24,8 @@ const dbRef = database.ref(databass);
 var job = new CronJob('* * * * *', function(){
 
     readDb();
+    checkDoclibDatesBlaustein();
+
 
 } , null, true, 'Europe/Berlin');
 job.start();
@@ -74,7 +76,7 @@ const getReleaseStats = (snapshot, key) =>{
               let numDiscogs = snapshot.forSale
               if(numDiscogs!=response.data.num_for_sale){
                   if(numDiscogs<response.data.num_for_sale){
-                    sendTelegramMessage(snapshot);
+                    sendTelegramMessage('Neues listing für '+ snapshot.title);
                   }
                 updateSaleCounter(snapshot, response, key);
               }
@@ -84,10 +86,10 @@ const getReleaseStats = (snapshot, key) =>{
           });
 }
 
-const sendTelegramMessage = (snapshot)=>{
+const sendTelegramMessage = (telegramMessage)=>{
     var configTelegram = {
         method: 'post',
-        url: 'https://api.telegram.org/bot'+process.env.TELEGRAM_TOKEN+'/sendMessage?chat_id=5641643064&text=Neues listing für '+ snapshot.title,
+        url: 'https://api.telegram.org/bot'+process.env.TELEGRAM_TOKEN+'/sendMessage?chat_id=5641643064&text='+ telegramMessage,
         headers: {
         'Content-Type': 'text/plain'
         }
@@ -111,6 +113,30 @@ const updateSaleCounter = (snapshot, response, key)=>{
     const updates = {};
     updates['/' + key] = postData;
     database.update(database.ref(databass), updates);
+}
+
+const checkDoclibDatesBlaustein = ()=> {
+    let date = new Date().toJSON();
+    let slicedeDate = date.slice(0, 10);
+    var configDoclib = {
+        method: 'get',
+        url: 'https://www.doctolib.de/availabilities.json?visit_motive_ids=4322286&agenda_ids=476079-476080&practice_ids=187855&insurance_sector=public&telehealth=false&limit=5&start_date=' + slicedeDate,
+        headers: {
+            'Content-Type': 'text/plain'
+        }
+    };
+
+    axios(configDoclib)
+        .then(function (response) {
+            console.log(response);
+            if (response.data.next_slot != undefined) {
+                console.log(response.data.next_slot);
+                sendTelegramMessage('BlausteinKlinik next slot: ' + response.data.next_slot);
+            }
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
 }
 
 app.get('/', (req, res) => {res.send("Alive")})
