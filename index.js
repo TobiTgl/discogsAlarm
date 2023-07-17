@@ -123,11 +123,13 @@ const checkDoclibDatesBlaustein = ()=> {
         url: 'https://www.doctolib.de/availabilities.json?visit_motive_ids=4322286&agenda_ids=476079-476080&practice_ids=187855&insurance_sector=private&telehealth=false&limit=5&start_date='+slicedeDate,
         headers: {
             'Content-Type': 'text/plain',
+            'Cookie': '__cf_bm=575tiWlYlpWZnloowgam1rZlQdNgN0YpswkCsjSn6uw-1689588661-0-AaDYtjyKTweSieIGbzyLs2UA6E5p4i422+jG6AJrRmH2gi214JDW8VJP9p8VHWtcLJKvWynVwVHUxgPI6LJqZKo7hFGEmje/rdlCSjtH9J7k;ssid=ub00unk-nLAXiFG3oFN6; path=/; expires=Sat, 17 Aug 2024 10:13:01 GMT; secure;esid=-u1aoPLxAnJiYJxrTM_d4Aoc; path=/; secure;_doctolib_session=InVW%2FLkJNMLUfZJGvE%2FrDQiCjgCLnoCndF9mbyuALMnUbjBASkcLTF1Ise9u%2BBUqzork016AOADK929MB3lnjH1BL1Y8m9T6U%2FtO2cKVtbFIvMDiL6nwPWcSajBvVJENoc2bQTVPMqqsxqzeu99ynu5tpHj42fAD5FptcHntcjQUizBkudGs3zsRjk1ZK7Vu1mw8kmcjQKwr5af8GWcyMYfnXX0d2SyB%2BMYnd%2BcvG8Sz0qeHsSLPdOMwa7VGqF1qff1uacFHaHCSEF5pfvPxXjuVWc5aunB96gn4IdnDt7AwAQpIeN0lv3lIbinDcv6bbJSXexvQu8jzeJDQvCzZdcnAcIsDsRL8wKRNACrsGQ40dKuCFsX%2FORMC2BTpCtWPiGs5Ns4ogHTLo0BLLjsps4ob3NxGRRc8w3tZ7RtIFk28qMxr4BSb%2Faw%3D--Q9J1lK0Bm9rVAUS7--SkB8kWhpVeMRdvE2ZpAVzw%3D%3D',
         }
     };
 
     axios(configDoclib)
         .then(function (response) {
+            console.log(response)
             if (response.data.next_slot != undefined) {
                 console.log(response.data.next_slot);
                 sendTelegramMessage('BlausteinKlinik next slot: ' + response.data.next_slot);
