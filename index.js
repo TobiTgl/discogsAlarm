@@ -120,11 +120,9 @@ const checkDoclibDatesBlaustein = ()=> {
     let slicedeDate = date.slice(0, 10);
     var configDoclib = {
         method: 'get',
-        url: 'https://www.doctolib.de/availabilities.json?visit_motive_ids=4322286&agenda_ids=476079-476080&practice_ids=187855&insurance_sector=private&telehealth=false&limit=5&start_date=2023-07-16' + slicedeDate,
+        url: 'https://www.doctolib.de/availabilities.json?visit_motive_ids=4322286&agenda_ids=476079-476080&practice_ids=187855&insurance_sector=private&telehealth=false&limit=5&start_date='+slicedeDate,
         headers: {
-            'Content-Type': 'application/json',
-            'Cookie': '__cf_bm=XkC_lRD97KnhrZSBvJTmEMtpYU4lyfok0wAFkLuIPFU-1689585459-0-Abf1iTvzyKrxdKx5i/TyhcUQBLuMo7utjLvFR0+fKXEGBly0FmTe5L0TMlo8ieoGtgOkxXTXbAExUkRDHR12DsG+hbq9lIww+CMHLmdQ7AB0; _doctolib_session=ivG629i4BkcFf9WORsJYwfLLGRHf0Mw1KBseqnH%2FrXR6RbhCHxoaDg2p%2FPIDU69eq4TxmVOwMPu%2BXMpVSfWdnUu9QrP%2FkGlrwKILigaPzhYd3Jtr%2B5P62r4JnBTfaRdTeS68T5F7CDVIFnLhYPBXWyw4FdqUc90a1xZRHPtko7AsAwtc9PiOcnhUkzSwlvErKorc03%2BvlPblfpAC5JSKdxGTF%2Fm9DKscLqc7NBSLlbTw9HeLl1rXaLyVBc%2BMBrzBtTo2s4P6yLcsAbcQUhnAOsaoM1Xcrxz8BO6zU%2BnHsFdV1lE6mHyzqenpBcGp9UjoeciCqU61Px%2FhhT0Qlxxjjtv40QLSNz1toF9qahWb3kBl28WYuvFkXGlauhPuznaJ4i6tD4%2F2c%2BK1NLHAa6%2Bbp9JALJNYgDqutb2r92WFvA1NLCkp6n1EnZU%3D--grGEeNih%2Bm8mx%2F%2F5--B92ZSN32ksocFF51qhHdnA%3D%3D; esid=UjWU6ImtQDXAVyiD9Hbs2qvE; ssid=ub00unk-itFQhFjnoDga',
-            'X-Csfr-Token' : '7SLpWBW31IjUMzXksmGOMjrZ6YaBoBQWXSkAu+7OW5NKifsAF09FWDXoUJ/NW9SQd4mvtCzQWeVMKKK8FtoNZQ=='
+            'Content-Type': 'text/plain',
         }
     };
 
