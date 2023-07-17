@@ -128,7 +128,6 @@ const checkDoclibDatesBlaustein = ()=> {
 
     axios(configDoclib)
         .then(function (response) {
-            console.log(response);
             if (response.data.next_slot != undefined) {
                 console.log(response.data.next_slot);
                 sendTelegramMessage('BlausteinKlinik next slot: ' + response.data.next_slot);
