@@ -51,7 +51,7 @@ const getReleaseStats = (snapshot, key) =>{
         };
     
     axios(config)
-          .then(function (response) {
+          .then(function (response) {open
               let numDiscogs = snapshot.forSale
               if(numDiscogs!=response.data.num_for_sale){
                   if(numDiscogs<response.data.num_for_sale){
